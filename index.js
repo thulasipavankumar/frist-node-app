@@ -9,7 +9,7 @@ var server = require('http').createServer(app);
 server.listen(port);
 const wss = new WebSocket.Server({ server });
 app.get('/', function (req, res) {
-    res.sendfile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/index.html');
  })
 
  wss.on('connection', function (ws) {
