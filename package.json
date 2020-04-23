@@ -4,7 +4,8 @@
   "description": "hobby project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -14,6 +15,10 @@
     "chat",
     "websocket"
   ],
+  "engines": {
+    "node": "12.16.x",
+    "npm": "6.x"
+  },
   "author": "pavan kumar tulasi",
   "license": "ISC",
   "bugs": {
@@ -22,14 +27,12 @@
   "homepage": "https://github.com/thulasipavankumar/first-node-app#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "express-ws": "^4.0.0",
     "http": "0.0.1-security",
-    "websocket": "^1.0.31",
     "ws": "^7.2.3"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.1",
     "utf-8-validate": "^5.0.2"
-  },
-  "start": "node index.js"
+  }
+  
 }
