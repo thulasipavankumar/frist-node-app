@@ -5,11 +5,11 @@ const WebSocket = require('ws')
 const port = process.env.PORT || 8080
 const app = express()
 var server = require('http').createServer(app);
-
+app.use(express.static(__dirname + '/public'));
 server.listen(port);
 const wss = new WebSocket.Server({ server });
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/public/html/index.html');
  })
 
  wss.on('connection', function (ws) {
