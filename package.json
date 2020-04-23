@@ -23,11 +23,13 @@
   "dependencies": {
     "express": "^4.17.1",
     "express-ws": "^4.0.0",
+    "http": "0.0.1-security",
     "websocket": "^1.0.31",
     "ws": "^7.2.3"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.1",
     "utf-8-validate": "^5.0.2"
-  }
+  },
+  "start": "node index.js"
 }
