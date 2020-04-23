@@ -1,4 +1,4 @@
-# This is a chat application with private chat rooms concept [link to site!](https://priv-chatroom.herokuapp.com/)
+# This is a chat application with private [chat rooms](https://priv-chatroom.herokuapp.com/)
 
 ### The following tasks are to developed
 - [x] Create basic chatroom with broadcast
