@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Chat with you friends</title>
+        <title>Private Chat room</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="../css/button.css">
         <script>
             var _host;
             var _webSocket
@@ -15,6 +16,7 @@
                 initializeHandlers();
                 var button = document.getElementById("sendButton");
                 button.onclick = sendMessageToServer;
+                document.getElementById("textArea").value = ""
             }
             this.openConnection = function(){
                 var protocolRequest = "ws";
@@ -29,18 +31,25 @@
                 _webSocket.onmessage = gotMessage;
                 _webSocket.onclose = onClose;
             }
-            var onOpen = function(msg){
-                
+            let onOpen = function(msg){
+                displayInTextBox("displayArea","welcome to Chat Arena , Let's Begin the fun")
             }
             var gotMessage = function(msg){
-                var data = JSON.parse(msg.data).message;
-                var tag = document.getElementById("displayArea");               
-                var br = document.createElement("br");             
+                let recievedMessage = JSON.parse(JSON.parse(msg.data).message);
+
+                if(recievedMessage.message!==undefined){
+                    displayInTextBox("displayArea",recievedMessage.message.replace(/\n/g, '<br>'))
+                }
+                           
+            }
+            let displayInTextBox = (tagName,message) =>{
+                let tag = document.getElementById(tagName);               
+                let br = document.createElement("br");             
                 tag.appendChild(br);
-                tag.innerHTML = tag.innerHTML+data;             
+                tag.innerHTML = tag.innerHTML+message;
             }
             var onClose = function(msg){
-                
+                displayInTextBox("displayArea","You have been disconnected :(")
             }
             function waitForSocketConnection(socket, callback) {
             var retryTimes = 0;
@@ -79,10 +88,9 @@
     </head>
     <body onload="init();">
         <div>
-        <button type="button" id="sendButton">send Message</button>
-        <textarea id="textArea">
-        
-        </textarea>
+            <textarea id="textArea">
+            </textarea>
+        <button class="btn" type="button" id="sendButton">send Message</button>
         </div >
         <div id="displayArea">
             
