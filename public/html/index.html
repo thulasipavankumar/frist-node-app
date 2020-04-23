@@ -32,7 +32,8 @@
                 _webSocket.onclose = onClose;
             }
             let onOpen = function(msg){
-                displayInTextBox("displayArea","welcome to Chat Arena , Let's Begin the fun")
+                console.log("new Connection");
+                displayInTextBox("displayArea","Welcome to Chat Arena , <br>Let's the fun Begin <br>!(^_^)!")
             }
             var gotMessage = function(msg){
                 let recievedMessage = JSON.parse(JSON.parse(msg.data).message);
@@ -49,6 +50,8 @@
                 tag.innerHTML = tag.innerHTML+message;
             }
             var onClose = function(msg){
+                //TODO Have to reconnect to the websocket if it's a timeout
+                console.log("Closed connection");
                 displayInTextBox("displayArea","You have been disconnected :(")
             }
             function waitForSocketConnection(socket, callback) {

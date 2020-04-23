@@ -28,3 +28,23 @@ app.get('/', function (req, res) {
           });
       });
 });
+const createAPrivateChatRoom = ()=>{
+    //ceate and return a new chat room;
+}
+const addUserToTheExsistingChatRoom = (user,chatRoom) =>{
+    //chatRoom.add(user);
+}
+const removeUserFromChatRoom=(user,chatRoom) =>{
+    //chatRoom.remove(user);
+}
+const sendMessageToAllUsers= (users,msg)=>{
+    users.map(user=>{
+        //user.send(msg)
+    })
+}
+const sendMessageToWholeChatRoom = (chatRoom,msg) =>{
+    getUsersFromChatRoom(chatRoom).map(user=>{
+        //user.send(msg);
+    })
+}
+const getUsersFromChatRoom = (chatRoom) => chatRoom.getUsers();
