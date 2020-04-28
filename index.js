@@ -2,13 +2,13 @@ const express = require('express')
 const http = require('http')
 const WebSocket = require('ws')
 const chat_room=require('./chat_room');
+const url = require('url');
 
 const port = process.env.PORT || 8080
 const app = express()
 var server = require('http').createServer(app);
 app.use(express.static(__dirname + '/public'));
 server.listen(port);
-const wss = new WebSocket.Server({ server });
 let avialbleChatrooms = {};
 app.get('/',  (req, res) =>{
     console.log(req.originalUrl);
@@ -19,34 +19,18 @@ app.get('/',  (req, res) =>{
     res.sendFile(__dirname + '/public/html/index.html');
   })
 
- wss.on('connection', ws => {
-    ws.isAlive = true;
-    ws.on('pong', heartbeat);
-    ws.on('open', function open() {
-        
-      });
-      console.log(' Recieved a new connection from origin ' + ws.origin + '.');
-      ws.on('message', function incoming(data) {
-       // console.log(data);
-        let jsonMsg={};
-        jsonMsg.message=data;
-        wss.clients.forEach(function each(client) {
-            if (client.readyState === WebSocket.OPEN) {
-              client.send(JSON.stringify(jsonMsg));
-              client.send(ws.origin);
-            }
-          });
-      });
-});
-const createAPrivateChatRoom = ()=>{
+const createAPrivateChatRoom = (roomName)=>{
     //ceate and return a new chat room;
-    let r = Math.random().toString(36).substring(7);
-    console.log("random", r);
-    let newChatRoom = addRoomToGivenName(r);
-    avialbleChatrooms[newChatRoom] = new chat_room(newChatRoom);  
+    //let r = Math.random().toString(36).substring(7);
+   // console.log("random", r);
+   // let newChatRoomName =  addRoomToGivenName(roomName);
+    let chatRoomObj = new chat_room(roomName);
+    avialbleChatrooms[roomName] =  chatRoomObj
+    return chatRoomObj;
 }
 const doesChatRoomExsists = roomName =>  avialbleChatrooms.hasOwnProperty(roomName);
-addRoomToGivenName = name => "room"+name;
+const addRoomToGivenName = name => "room"+name;
+
 const addUserToTheExsistingChatRoom = (user,chatRoom) =>{
     //chatRoom.addUserToTheExsistingList(user);
 }
@@ -64,6 +48,36 @@ const sendMessageToWholeChatRoom = (chatRoom,msg) =>{
     })
 }
 const getUsersFromChatRoom = (chatRoom) => chatRoom.getUsers();
-const heartbeat = () => {
-    this.isAlive = true;
+
+  const addConnectionToExsistingRoom = (roomName) => {
+    let chatRoom;
+    if(doesChatRoomExsists(roomName)){
+        return avialbleChatrooms[roomName];
+    }else{
+        return createAPrivateChatRoom(pathname);
+    }
   }
+  const addUserToChatRoom = () =>{
+      
+  }
+  server.on('upgrade', function upgrade(request, socket, head) {
+    const pathname = url.parse(request.url).pathname.substr(1);
+    if(!request.headers.host.includes("localhost")){
+        socket.destroy();
+    } 
+    else{
+        let obj;
+        if(doesChatRoomExsists(pathname)){
+            obj = addConnectionToExsistingRoom(pathname);
+        }else{
+            obj = createAPrivateChatRoom(pathname);
+        }
+            let wssObj = obj.getMasterConnection();
+            wssObj.handleUpgrade(request, socket, head,  (ws) =>{
+                wssObj.emit('connection', ws, request);
+              });
+    }
+});
+
+
+ 

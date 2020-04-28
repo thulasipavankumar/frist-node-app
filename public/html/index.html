@@ -24,7 +24,9 @@
                     protocolRequest = "wss"
                 }
                 //protocolRequest+"://"+window.location.hostname+":"+location.port+"/ChatApplication/demo"
-                _webSocket = new WebSocket(protocolRequest+"://"+window.location.hostname+":"+location.port);
+                //protocolRequest+"://"+window.location.hostname+":"+location.port
+                let endPoint = protocolRequest+"://"+window.location.host+window.location.pathname
+                _webSocket = new WebSocket(endPoint);
             }
             this.initializeHandlers = function(){
                 _webSocket.onopen = onOpen;

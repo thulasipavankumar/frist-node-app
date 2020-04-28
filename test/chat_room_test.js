@@ -1,7 +1,7 @@
 const chat_room = require('../chat_room');
-let roomHello = new chat_room("Hello");  
+let roomHello = new chat_room("Hello");
 let roomHelloAgain = new chat_room("HelloAgain");
-print = (toPrint) => console.log(toPrint)
+print = (toPrint) => console.log(toPrint);
 print(roomHello.getChatRoomName());
 print(roomHelloAgain.getChatRoomName());
 
