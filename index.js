@@ -61,6 +61,7 @@ const getUsersFromChatRoom = (chatRoom) => chatRoom.getUsers();
       
   }
   server.on('upgrade', function upgrade(request, socket, head) {
+      try{
     const pathname = url.parse(request.url).pathname.substr(1);
     if(false||!request.headers.host.includes("localhost")){
         socket.destroy();
@@ -77,6 +78,10 @@ const getUsersFromChatRoom = (chatRoom) => chatRoom.getUsers();
                 wssObj.emit('connection', ws, request);
               });
     }
+}catch(err){
+   console.log("error in req upgrade",err);
+
+}
 });
 
 
