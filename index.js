@@ -10,15 +10,22 @@ var server = require('http').createServer(app);
 app.use(express.static(__dirname + '/public'));
 server.listen(port);
 let avialbleChatrooms = {};
+// app.get('/',  (req, res) =>{
+//     console.log(req.originalUrl);
+//     res.sendFile(__dirname + '/public/html/index.html');
+//  })
 app.get('/',  (req, res) =>{
-    console.log(req.originalUrl);
-    res.sendFile(__dirname + '/public/html/index.html');
- })
+    res.redirect("/room"+getRandomText(5));
+  })
  app.get(/room/, function (req, res) {
     console.log(req.originalUrl);
     res.sendFile(__dirname + '/public/html/index.html');
   })
-
+const getRandomText = (digits) => {
+    digits = digits?digits:7;
+     let r = Math.random().toString(36).substring(digits);
+   return r;
+}
 const createAPrivateChatRoom = (roomName)=>{
     //ceate and return a new chat room;
     //let r = Math.random().toString(36).substring(7);
@@ -82,6 +89,7 @@ const getUsersFromChatRoom = (chatRoom) => chatRoom.getUsers();
             console.log("created  new  room: "+pathname)
         }
             let wssObj = obj.getMasterConnection();
+            obj.sendMsgToAllUsers("new user has joined the chat");
             wssObj.handleUpgrade(request, socket, head,  (ws) =>{
                 wssObj.emit('connection', ws, request);
               });

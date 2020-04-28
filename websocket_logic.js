@@ -5,7 +5,7 @@ class websocket_manager{
     }
    
         
-    }
+    
     addConnectionToList =(connectionName,connection)=>{
         this.usersLists[connectionName]=connection;
     }

@@ -5,6 +5,7 @@ class chat_room {
      wss;
     constructor(roomName) {
       console.log("constructor for new room ",roomName)
+      //https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState
       this.roomName = roomName;
       this.wss = new WebSocket.Server({ noServer: true }); 
       this.wss.on('connection',ws=>{
@@ -24,8 +25,8 @@ class chat_room {
     deleteUserFromList = (userData) => {
        // pending 
     }
-    open = (data) => {
-      console.log("opened a new connection",data);
+    open = () => {
+      console.log("opened a new connection");
   }
   print = data => {
       console.log(data);
@@ -34,20 +35,34 @@ class chat_room {
     console.log("error in ws",errData)
   }
   message = (data) =>{
-      this.availableUsers.map(client => {
-          let jsonMsg={};
-          jsonMsg.message=data;
-          jsonMsg.origin = client.origin;
-          if (client.readyState === WebSocket.OPEN) {
-              client.send(JSON.stringify(jsonMsg));
-             }
-      })
-    
+    //https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState
+    let jsonMsg=JSON.parse(data);
+    if(jsonMsg.message!==undefined)
+    this.sendMsgToAllUsers(jsonMsg.message);
+    else
+    this.sendMsgToAllUsers(jsonMsg);
   }
+  sendMsgToAllUsers = (data)=>{
+    this.removeStaleUsersFromTheList();
+    this.availableUsers.map(client => {
+      let jsonMsg={};
+      jsonMsg.message=data;
+      jsonMsg.origin = client.origin;
+      if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify(jsonMsg));
+         }
+    })
+  }
+  removeStaleUsersFromTheList = () =>{
+    this.availableUsers = this.availableUsers.filter(user=>(user.readyState===0||user.readyState===1));
+  }
+  
   close = (closingCode,reason) =>{
+
     //https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
     console.log("closed in ws:"+closingCode+","+reason);
     //delete user from the list
+    this.sendMsgToAllUsers("A user disconnected ")
   }
 }
   module.exports = chat_room;

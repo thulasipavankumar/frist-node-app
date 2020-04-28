@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="icon"  type="image/png" href="./images/favicon.png">
         <title>Private Chat room</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="../css/button.css">
+        <link rel="stylesheet" href="../css/right.css">
         <script>
             var _host;
             var _webSocket
@@ -38,12 +40,12 @@
                 displayInTextBox("displayArea","Welcome to Chat Arena , <br>Let's the fun Begin <br>!(^_^)!")
             }
             var gotMessage = function(msg){
-                let recievedMessage = JSON.parse(JSON.parse(msg.data).message);
+                let receivedData = JSON.parse(msg.data);
+                let recievedMessage = receivedData.message;
 
-                if(recievedMessage.message!==undefined){
-                    displayInTextBox("displayArea",recievedMessage.message.replace(/\n/g, '<br>'))
-                }
-                           
+                if(recievedMessage!==undefined){
+                    displayInTextBox("displayArea",recievedMessage.replace(/\n/g, '<br>'))
+                }               
             }
             let displayInTextBox = (tagName,message) =>{
                 let tag = document.getElementById(tagName);               
