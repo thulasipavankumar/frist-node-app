@@ -62,7 +62,7 @@ const getUsersFromChatRoom = (chatRoom) => chatRoom.getUsers();
   }
   server.on('upgrade', function upgrade(request, socket, head) {
     const pathname = url.parse(request.url).pathname.substr(1);
-    if(!request.headers.host.includes("localhost")){
+    if(false||!request.headers.host.includes("localhost")){
         socket.destroy();
     } 
     else{
