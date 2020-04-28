@@ -1,0 +1,28 @@
+const wss = new WebSocket.Server({ server });
+
+ wss.on('connection', ws => {
+    ws.isAlive = true;
+    ws.on('pong', heartbeat);
+    ws.on('open',  () => {
+        
+      });
+      ws.on('error', () =>{
+        
+    });
+    ws.on('close', () =>{
+        //delete  user from chat room 
+        console.log("user disconnected");
+    });
+      console.log(' Recieved a new connection from origin ' + ws.origin + '.');
+      ws.on('message', function incoming(data) {
+       // console.log(data);
+        let jsonMsg={};
+        jsonMsg.message=data;
+        jsonMsg.origin = ws.origin;
+        wss.clients.forEach(function each(client) {
+            if (client.readyState === WebSocket.OPEN) {
+              client.send(JSON.stringify(jsonMsg));
+            }
+          });
+      });
+});

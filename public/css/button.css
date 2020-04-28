@@ -10,11 +10,11 @@ button {
   border-radius: 5%;
 }
 button.mbtn {
-  padding:0.6em 2em;
+  padding:0.1em 1em;
   border-radius: 8px;
   color:#fff;
   background-color:#1976d2;
-  font-size:0.70em;
+  font-size:0.8em;
   border:0;
   cursor:pointer;
   margin:1em;
