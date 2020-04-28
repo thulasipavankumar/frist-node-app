@@ -4,6 +4,7 @@ class chat_room {
      availableUsers=[];
      wss;
     constructor(roomName) {
+      console.log("constructor for new room ",roomName)
       this.roomName = roomName;
       this.wss = new WebSocket.Server({ noServer: true }); 
       this.wss.on('connection',ws=>{

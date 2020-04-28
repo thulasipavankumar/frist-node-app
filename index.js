@@ -62,6 +62,7 @@ const getUsersFromChatRoom = (chatRoom) => chatRoom.getUsers();
   }
   server.on('upgrade', function upgrade(request, socket, head) {
       try{
+          console.log("Got an upgrade request")
     const pathname = url.parse(request.url).pathname.substr(1);
     if(false||!request.headers.host.includes("localhost")){
         socket.destroy();
@@ -70,8 +71,10 @@ const getUsersFromChatRoom = (chatRoom) => chatRoom.getUsers();
         let obj;
         if(doesChatRoomExsists(pathname)){
             obj = addConnectionToExsistingRoom(pathname);
+            console.log("added new user to  room: "+pathname)
         }else{
             obj = createAPrivateChatRoom(pathname);
+            console.log("created  new  room: "+pathname)
         }
             let wssObj = obj.getMasterConnection();
             wssObj.handleUpgrade(request, socket, head,  (ws) =>{
