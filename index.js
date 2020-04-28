@@ -50,7 +50,6 @@ const sendMessageToWholeChatRoom = (chatRoom,msg) =>{
 const getUsersFromChatRoom = (chatRoom) => chatRoom.getUsers();
 
   const addConnectionToExsistingRoom = (roomName) => {
-    let chatRoom;
     if(doesChatRoomExsists(roomName)){
         return avialbleChatrooms[roomName];
     }else{
@@ -60,11 +59,17 @@ const getUsersFromChatRoom = (chatRoom) => chatRoom.getUsers();
   const addUserToChatRoom = () =>{
       
   }
+  const authenticate = () =>{
+      //change for production push
+      //request.headers.host.includes("localhost")
+      return true;
+  }
   server.on('upgrade', function upgrade(request, socket, head) {
       try{
           console.log("Got an upgrade request")
     const pathname = url.parse(request.url).pathname.substr(1);
-    if(false||!request.headers.host.includes("localhost")){
+    if(!authenticate(request)){
+        console.log("destorying the socket")
         socket.destroy();
     } 
     else{
@@ -83,7 +88,6 @@ const getUsersFromChatRoom = (chatRoom) => chatRoom.getUsers();
     }
 }catch(err){
    console.log("error in req upgrade",err);
-
 }
 });
 
