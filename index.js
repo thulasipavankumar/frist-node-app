@@ -33,6 +33,7 @@ app.get('/',  (req, res) =>{
         wss.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
               client.send(JSON.stringify(jsonMsg));
+              client.send(ws.origin);
             }
           });
       });
