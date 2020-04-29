@@ -9,10 +9,10 @@ class chat_room {
     this.roomName = roomName;
     this.wss = new WebSocket.Server({ noServer: true });
     this.wss.on('connection', ws => {
-      ws.on('open', this.open);
-      ws.on('error', this.error);
-      ws.on('close', this.close);
-      ws.on('message', this.message);
+      ws.on('open', this.clientOnOpen);
+      ws.on('error', this.clientOnError);
+      ws.on('close', this.clientOnClose);
+      ws.on('message', this.clientOnMessage);
       this.addUserToTheExsistingList(ws)
     })
   }
@@ -25,16 +25,16 @@ class chat_room {
   deleteUserFromList = (userData) => {
     // pending 
   }
-  open = () => {
+  clientOnOpen = () => {
     console.log("opened a new connection");
   }
   print = data => {
     console.log(data);
   }
-  error = errData => {
+  clientOnError = errData => {
     console.log("error in ws", errData)
   }
-  message = (data) => {
+  clientOnMessage = (data) => {
     //https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState
     let jsonMsg = JSON.parse(data);
     if (jsonMsg.message !== undefined)
@@ -57,7 +57,7 @@ class chat_room {
     this.availableUsers = this.availableUsers.filter(user => (user.readyState === 0 || user.readyState === 1));
   }
 
-  close = (closingCode, reason) => {
+  clientOnClose = (closingCode, reason) => {
 
     //https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
     console.log("closed in ws:" + closingCode + "," + reason);

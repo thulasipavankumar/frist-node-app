@@ -2,11 +2,11 @@
 <html>
 
 <head>
-    <link rel="icon" type="image/png" href="./images/favicon.png">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
     <title>Private Chat room</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="../css/button.css">
-    <link rel="stylesheet" href="../css/right.css">
+    <script src="../js/script.js"></script>
     <script>
         /*
         MIT License
@@ -31,88 +31,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
         */
-        var _host;
-        var _webSocket
-        function init() {
-            var param = window.location.href;
-            var primaryHost = window.location.hostname;
-            console.log(" " + param + " " + primaryHost);
-
-            openConnection();
-            initializeHandlers();
-            var button = document.getElementById("sendButton");
-            button.onclick = sendMessageToServer;
-            document.getElementById("textArea").value = ""
-        }
-        this.openConnection = function () {
-            var protocolRequest = "ws";
-            if ((location.protocol) === "https:") {
-                protocolRequest = "wss"
-            }
-            //protocolRequest+"://"+window.location.hostname+":"+location.port+"/ChatApplication/demo"
-            //protocolRequest+"://"+window.location.hostname+":"+location.port
-            let endPoint = protocolRequest + "://" + window.location.host + window.location.pathname
-            _webSocket = new WebSocket(endPoint);
-        }
-        this.initializeHandlers = function () {
-            _webSocket.onopen = onOpen;
-            _webSocket.onmessage = gotMessage;
-            _webSocket.onclose = onClose;
-        }
-        let onOpen = function (msg) {
-            console.log("new Connection");
-            displayInTextBox("displayArea", "Welcome to Chat Arena , <br>Let's the fun Begin <br>!(^_^)!")
-        }
-        var gotMessage = function (msg) {
-            let receivedData = JSON.parse(msg.data);
-            let recievedMessage = receivedData.message;
-
-            if (recievedMessage !== undefined) {
-                displayInTextBox("displayArea", recievedMessage.replace(/\n/g, '<br>'))
-            }
-        }
-        let displayInTextBox = (tagName, message) => {
-            let tag = document.getElementById(tagName);
-            let br = document.createElement("br");
-            tag.appendChild(br);
-            tag.innerHTML = tag.innerHTML + message;
-        }
-        var onClose = function (msg) {
-            //TODO Have to reconnect to the websocket if it's a timeout
-            console.log("Closed connection");
-            displayInTextBox("displayArea", "You have been disconnected :(")
-        }
-        function waitForSocketConnection(socket, callback) {
-            var retryTimes = 0;
-            setTimeout(
-                function () {
-                    if (socket.readyState === 1) {
-                        if (callback != null) {
-                            callback();
-                        }
-                        return;
-
-                    } else {
-                        waitForSocketConnection(socket, callback);
-                    }
-                    if (retryTimes > 500) {
-                        return;
-                    }
-                    retryTimes++;
-
-                }, 10); // wait 5 milisecond for the connection...
-        }
-        function sendMessageToServer() {
-            var text = document.getElementById("textArea").value;
-            var jsonMessage = {
-                message: text,
-            };
-            document.getElementById("textArea").value = "";
-            jsonMessage = JSON.stringify(jsonMessage);
-            waitForSocketConnection(_webSocket, function () {
-                _webSocket.send(jsonMessage);
-            });
-        }
+        
     </script>
 
 </head>
