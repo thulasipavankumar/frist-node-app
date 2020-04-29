@@ -4,4 +4,4 @@
 - [x] Create basic chatroom with broadcast
 - [x] Host the chatroom application
 - [ ] UI Cosmetics for better UX
-- [ ] Logic for creating private chat rooms
+- [x] Logic for creating private chat rooms
